@@ -11,22 +11,24 @@
 
 .screen {
   background: #111111;
-  padding: 15px;
+  padding: 10px;
   border-radius: 10px;
   text-align: right;
-  min-height: 90px;
+  min-height: 70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .expression {
+  margin: 0;
   font-size: 1.2rem;
   opacity: 0.7;
   min-height: 1.5em;
 }
 
 .result {
+  margin: 0;
   font-size: 2rem;
   font-weight: bold;
   min-height: 1.5em;
@@ -55,7 +57,7 @@
 }
 
 button.op {
-  background: #ff9500;
+  background: #e1c225;
 }
 
 button.eq {

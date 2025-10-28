@@ -9,46 +9,47 @@ export default function Calculator() {
     const [isFirst, setIsFirst] = useState(true);
     const [isLastSymbolOp, setIsLastSymbolOp] = useState(false);
 
-
-    const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-    const operators = ['.', '+', '-', '*', '/'];
-
-    const numButtonClickHandler = (value) => {
+    const numberClick = (value) => {
         setExpression(expression => expression + value);
         setIsLastSymbolOp(false);
         setIsFirst(false);
     };
 
-    const opButtonClickHandler = (value) => {
-        if (isFirst && value.trim() === '-') value = '-';
-
-        if (value.trim() === '.') value = '.';
-
-        if (isFirst && value.trim() !== '-') return;
+    const operatorClick = (value) => {
+        if (isFirst && value !== '-') return;
 
         if (isLastSymbolOp) return;
+
+        if (isFirst && value === '-') value = '-';
+
+        if (value === '.') value = '.';
 
         setExpression(expression => expression + value);
         setIsFirst(false);
         setIsLastSymbolOp(true);
     };
 
-    const equalsClickHandler = () => {
-        if (isLastSymbolOp || isFirst) {
-            return;
-        };
+    const equalsClick = () => {
+        try {
+            if (isLastSymbolOp || isFirst) {
+                return;
+            };
 
-        const res = evaluate(expression).toString();
-        setResult(res);
-        setExpression(res);
+            const res = evaluate(expression).toString();
+            setResult(res);
+            setExpression(res);
+        } catch (error) {
+            setExpression('')
+            setResult('0')
+        }
     };
 
-    const allClearClickHandler = () => {
+    const allClearClick = () => {
         setExpression('');
         setResult('0');
         setIsFirst(true);
         setIsLastSymbolOp(false);
-    };  
+    };
 
     return (
         <div className={styles.calculator}>
@@ -59,14 +60,30 @@ export default function Calculator() {
             </div>
 
             <div className={styles.keyboard}>
+                <button className={styles.ac} onClick={allClearClick}>AC</button>
+                <div></div>
+                <div></div>
+                <div></div>
 
-                {numbers.map(val => <button onClick={() => numButtonClickHandler(val)} key={val}>{val}</button>)}
-                {operators.map(val => <button onClick={() => opButtonClickHandler(` ${val} `)} key={val}>{val}</button>)}
+                <button onClick={() => numberClick("7")}>7</button>
+                <button onClick={() => numberClick("8")}>8</button>
+                <button onClick={() => numberClick("9")}>9</button>
+                <button className={styles.op} onClick={() => operatorClick("/")}>/</button>
 
-                <div>
-                    <button className={styles.eq} onClick={equalsClickHandler}>=</button>
-                    <button className={styles.ac} onClick={allClearClickHandler}>AC</button>
-                </div>
+                <button onClick={() => numberClick("4")}>4</button>
+                <button onClick={() => numberClick("5")}>5</button>
+                <button onClick={() => numberClick("6")}>6</button>
+                <button className={styles.op} onClick={() => operatorClick("*")}>*</button>
+
+                <button onClick={() => numberClick("1")}>1</button>
+                <button onClick={() => numberClick("2")}>2</button>
+                <button onClick={() => numberClick("3")}>3</button>
+                <button className={styles.op} onClick={() => operatorClick("-")}>-</button>
+
+                <button onClick={() => numberClick("0")}>0</button>
+                <button onClick={() => operatorClick(".")}>.</button>
+                <button className={styles.eq} onClick={equalsClick}>=</button>
+                <button className={styles.op} onClick={() => operatorClick("+")}>+</button>
             </div>
 
         </div>
