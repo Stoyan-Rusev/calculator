@@ -1,3 +1,5 @@
+import styles from './Calculator.module.css'
+
 import { evaluate } from "mathjs";
 import { useState } from "react";
 
@@ -6,7 +8,7 @@ export default function Calculator() {
     const [result, setResult] = useState('0');
     const [isFirst, setIsFirst] = useState(true);
     const [isLastSymbolOp, setIsLastSymbolOp] = useState(false);
-    
+
 
     const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
     const operators = ['+', '-', '*', '/'];
@@ -18,7 +20,7 @@ export default function Calculator() {
     };
 
     const opButtonClickHandler = (value) => {
-        if (isFirst && value !== ' - ') {
+        if (isFirst && value.trim() !== '-') {
             return;
         }
 
@@ -32,35 +34,38 @@ export default function Calculator() {
     };
 
     const equalsClickHandler = () => {
+        if (isLastSymbolOp || isFirst) {
+            return;
+        };
+
         const res = evaluate(expression).toString();
         setResult(res);
         setExpression(res);
     };
+
     const allClearClickHandler = () => {
         setExpression('');
         setResult('0');
-    }
+        setIsFirst(true);
+        setIsLastSymbolOp(false);
+    };  
 
     return (
-        <div className="device">
+        <div className={styles.calculator}>
 
-            <h1>Calculator</h1>
-
-            <div className="screen">
-                <p className="expression">{expression || '\u00A0'}</p>
-                <h2 className="result">{result}</h2>
+            <div className={styles.screen}>
+                <p className={styles.expression}>{expression || '\u00A0'}</p>
+                <h2 className={styles.result}>{result}</h2>
             </div>
 
-            <div className="keyboard">
-                <div className="numbers">
-                    {numbers.map(val => <button onClick={() => numButtonClickHandler(val)} key={val}>{val}</button>)}
-                </div>
-                <div className="operators">
-                    {operators.map(val => <button onClick={() => opButtonClickHandler(` ${val} `)} key={val}>{val}</button>)}
-                </div>
+            <div className={styles.keyboard}>
+
+                {numbers.map(val => <button onClick={() => numButtonClickHandler(val)} key={val}>{val}</button>)}
+                {operators.map(val => <button onClick={() => opButtonClickHandler(` ${val} `)} key={val}>{val}</button>)}
+
                 <div>
-                    <button onClick={equalsClickHandler}>=</button>
-                    <button onClick={allClearClickHandler}>AC</button>
+                    <button className={styles.eq} onClick={equalsClickHandler}>=</button>
+                    <button className={styles.ac} onClick={allClearClickHandler}>AC</button>
                 </div>
             </div>
 
