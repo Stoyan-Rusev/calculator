@@ -11,7 +11,7 @@ export default function Calculator() {
 
 
     const numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-    const operators = ['+', '-', '*', '/'];
+    const operators = ['.', '+', '-', '*', '/'];
 
     const numButtonClickHandler = (value) => {
         setExpression(expression => expression + value);
@@ -20,13 +20,13 @@ export default function Calculator() {
     };
 
     const opButtonClickHandler = (value) => {
-        if (isFirst && value.trim() !== '-') {
-            return;
-        }
+        if (isFirst && value.trim() === '-') value = '-';
 
-        if (isLastSymbolOp) {
-            return;
-        }
+        if (value.trim() === '.') value = '.';
+
+        if (isFirst && value.trim() !== '-') return;
+
+        if (isLastSymbolOp) return;
 
         setExpression(expression => expression + value);
         setIsFirst(false);
